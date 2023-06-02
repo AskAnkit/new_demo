@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 class UserRepository{
 
-  static const tableName = "User";
+  static const tableName = "users";
   static const id ="id";
   static const name = "name";
 
@@ -26,11 +26,15 @@ class UserRepository{
       return null;
     }
   }
+
+
   Future updateUser(int id, UserModel model) async{
     var res = await _database.update(tableName, model.toJson(),
         where: '$id = ?', whereArgs: [id]);
     return res;
   }
+
+
   Future<UserModel?> getUser(int id) async{
     var res = await _database.query(tableName, where: "$id = ?", whereArgs: [id]);
     return res.isNotEmpty ? UserModel.fromJson(res.first) : null;
@@ -41,6 +45,20 @@ class UserRepository{
     List<UserModel> list =
     res.isNotEmpty ? res.map((c) => UserModel.fromJson(c)).toList() : [];
     return list;
+  }
+
+  Future<List<UserModel>> getAllPostOfUser(int id) async {
+    var res = await _database.query("user_details", where: "user_id = ?", whereArgs: [id]);
+    List<UserModel> list = res.isNotEmpty ? res.map((c) => UserModel.fromJson(c)).toList() : [];
+    return list;
+  }
+
+
+  Future<void> insertData(UserModel model) async {
+    var res= _database.insert("user_details", model.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,);
+    print(res.toString());
+
   }
 
   Future deleteClient(int id) async {

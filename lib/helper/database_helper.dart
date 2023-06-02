@@ -23,6 +23,7 @@ class DatabaseHelper{
 
   Database getDatabase(){
     return _database!;
+
   }
 
   initDB() async {
@@ -30,17 +31,36 @@ class DatabaseHelper{
     String path = join(documentsDirectory.path, "TestDB.db");
     _database =  await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-          await createUserTable(db);
+          await db.execute(createUsersTableQuery);
+          await db.execute(createUserDetailsTableQuery);
         });
   }
 
-  Future createUserTable(Database db) async{
+/*  Future createUserTable(Database db) async{
     await db.execute(
         'CREATE TABLE ${UserRepository.tableName} ('
             '${UserRepository.id} INTEGER PRIMARY KEY,'
-            ' ${UserRepository.name} TEXT'
+            ' ${UserRepository.name} TEXT NOT NULL'
             ')');
-  }
+  }*/
+
+
+  final createUserDetailsTableQuery = '''
+  CREATE TABLE user_details (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+  )
+''';
+  
+  final createUsersTableQuery = '''
+  CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    password TEXT
+  )
+''';
 
 
 }

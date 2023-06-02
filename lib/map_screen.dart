@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:new_demo/helper/map_repo.dart';
 import 'package:new_demo/helper/user_model.dart';
 
 class MapScreen extends ConsumerStatefulWidget {
@@ -72,7 +71,6 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     var model = UserModel();
     model.latitude = latLng.latitude;
     model.longitude = latLng.longitude;
-    MapRepository().addData(model);
     mapController.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 

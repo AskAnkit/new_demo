@@ -11,6 +11,15 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       name: json['name'] as String?,
       longitude: json['longitude'] as num?,
       latitude: json['latitude'] as num?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      content: json['content'] as String?,
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+      user_id: json['user_id'] as int?,
+      password: json['password'] as String?,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) {
@@ -23,7 +32,12 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) {
   }
 
   writeNotNull('id', instance.id);
+  writeNotNull('user_id', instance.user_id);
   writeNotNull('name', instance.name);
+  writeNotNull('content', instance.content);
+  writeNotNull('password', instance.password);
+  writeNotNull('createdAt', instance.createdAt?.toIso8601String());
+  writeNotNull('updatedAt', instance.updatedAt?.toIso8601String());
   writeNotNull('latitude', instance.latitude);
   writeNotNull('longitude', instance.longitude);
   return val;
